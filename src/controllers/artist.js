@@ -66,4 +66,19 @@ const updateArtist = async (req, res) => {
   }
 };
 
-module.exports = { createArtist, readAllArtists, readArtistById, updateArtist };
+const deleteArtist = async (req, res) => {
+    const { id } = req.params;
+    const values = [id];
+    try {
+        const { rows } = await db.query('DELETE FROM Artists WHERE id = $1 RETURNING *', values);
+        if (rows.length === 0) {
+            return res.status(404).json({ message: `artist ${id} does not exist` });
+        }
+        res.status(200).json(rows[0]);
+
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while deleting the artist' });
+    }
+}
+
+module.exports = { createArtist, readAllArtists, readArtistById, updateArtist, deleteArtist };
