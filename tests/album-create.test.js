@@ -1,41 +1,39 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const db = require('../src/db');
+const db = require('../src/db/index');
 const app = require('../src/app');
 
+
 describe('create album', () => {
-  describe('/artists/:id/albums', () => {
-    describe('POST', () => {
-      it('creates a new album associated with an artist', async () => {
-        let artistId;
-
-        before(async () => {
-          const { body } = await request(app).post('/artists').send({
-            name: 'Tame Impala',
-            genre: 'rock',
-          });
-          artistId = body.id;
-        });
-        const albumData = {
-          name: 'A wonderful Album',
-          year: 2010,
-        };
-
+    let artist;
+    beforeEach(async () => {
+      const { rows } = await db.query(
+        'INSERT INTO Artists (name, genre) VALUES($1, $2) RETURNING *',
+        ['Tame Impala', 'rock']
+      );
+  
+      artist = rows[0];
+    });
+  
+    describe('POST /artists/{id}/albums', () => {
+      it('creates a new album in the database', async () => {
         const { status, body } = await request(app)
-          .post(`/artists/${artistId}/albums`)
-          .send(albumData);
-
+          .post(`/artists/${artist.id}/albums`)
+          .send({
+            name: 'A Wonderful Album',
+            year: 2023,
+          });
+  
         expect(status).to.equal(201);
-        expect(body.name).to.equal(albumData.name);
-        expect(body.year).to.equal(artistId);
-
+        expect(body.name).to.equal('A Wonderful Album');
+        expect(body.year).to.equal(2023);
+  
         const {
-          rows: [albumDataFromDB],
-        } = await db.query(`SELECT * FROM Albums WHERE id = ${body.id}`);
-        expect(albumDataFromDB.name).to.equal(albumData.name);
-        expect(albumDataFromDB.year).to.equal(albumData.year);
-        expect(albumDataFromDB.artistId).to.equal(artistId);
+          rows: [albumData],
+        } = await db.query(`SELECT * FROM Albums WHERE artistId = ${artist.id}`);
+        expect(albumData.name).to.equal('A Wonderful Album');
+        expect(albumData.year).to.equal(2023);
+        expect(albumData.artistid).to.equal(artist.id);
       });
     });
   });
-});
