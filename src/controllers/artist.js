@@ -1,4 +1,4 @@
-const db = require('../db/index.js');
+const db = require('../db');
 
 const createArtist = async (req, res) => {
   try {
@@ -10,7 +10,7 @@ const createArtist = async (req, res) => {
     } = await db.query(insertQuery, values);
     res.status(201).json(newArtist);
   } catch (error) {
-    res.status(500).json('An error occurred while creating the artist.');
+    res.status(500).json({ error: 'An error occurred while creating the artist.'});
   }
 };
 
@@ -19,7 +19,7 @@ const readAllArtists = async (req, res) => {
     const { rows } = await db.query('SELECT * FROM Artists');
     res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json('An error occurred while reading artists.');
+    res.status(500).json({ error: 'An error occurred while reading artists.'});
   }
 };
 
@@ -35,7 +35,7 @@ const readArtistById = async (req, res) => {
       res.status(200).json(rows[0]);
     }
   } catch (error) {
-    res.status(500).json('An error occurred while fetching the artist.');
+    res.status(500).json({ error: 'An error occurred while fetching the artist.'});
   }
 };
 

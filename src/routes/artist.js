@@ -4,12 +4,12 @@ const { createAlbum } = require('../controllers/album');
 
 const artistRouter = express.Router();
 
-artistRouter.post('/', createArtist);
-artistRouter.get('/', readAllArtists);
-artistRouter.get('/:id', readArtistById);
-artistRouter.patch('/:id', updateArtist);
-artistRouter.delete('/:id', deleteArtist);
+artistRouter.post('/artists/', createArtist);
+artistRouter.get('/artists/', readAllArtists);
+artistRouter.get('/artists/:id', readArtistById);
+artistRouter.patch('/artists/:id', updateArtist);
+artistRouter.delete('/artists/:id', deleteArtist);
 
-artistRouter.route('/:artistId/albums').post(createAlbum);
+artistRouter.route('/artists/:artistId/albums').post(createAlbum);
 
 module.exports = artistRouter;

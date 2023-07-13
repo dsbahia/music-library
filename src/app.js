@@ -5,7 +5,7 @@ const albumRouter = require('./routes/album');
 
 app.use(express.json());
 
-app.use('/artists', artistRouter);
-app.use('/albums', albumRouter);
+app.use(artistRouter);
+app.use(albumRouter);
 
 module.exports = app;
