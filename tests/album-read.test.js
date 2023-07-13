@@ -56,4 +56,24 @@ describe('Read Albums', () => {
       });
     });
   });
+
+  describe('GET /albums/{id}', () => {
+    it('returns the album with the correct id', async () => {
+      const { status, body } = await request(app)
+        .get(`/albums/${albums[0].id}`)
+        .send();
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(albums[0]);
+    });
+
+    it('returns a 404 if the album does not exist', async () => {
+      const { status, body } = await request(app)
+        .get('/albums/999999999')
+        .send();
+
+      expect(status).to.equal(404);
+      expect(body.message).to.equal('Album 999999999 does not exist');
+    });
+  });
 });

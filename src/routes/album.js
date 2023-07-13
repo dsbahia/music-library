@@ -1,9 +1,9 @@
 const express = require('express');
-const { readAllAlbums } = require('../controllers/album');
+const { readAllAlbums, readAlbumById } = require('../controllers/album');
 const albumRouter = express.Router();
 
 albumRouter.get('/albums/', readAllAlbums);
-//albumRouter.get('/albums/:albumid', getAlbumById);
+albumRouter.get('/albums/:id', readAlbumById);
 //albumRouter.patch('/albums/:albumid', updateAlbum);
 //albumRouter.delete('/albums/:albumid', deleteAlbum);
 
