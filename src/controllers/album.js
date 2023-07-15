@@ -12,7 +12,7 @@ const createAlbum = async (req, res) => {
       [name, year, artistId]
     );
     res.status(201).json(album);
-  } catch (err) {
+  } catch (error) {
     res
       .status(500)
       .json({ error: 'An error occurred while creating the album.' });
@@ -91,4 +91,18 @@ const updateAlbum = async (req, res) => {
   }
 };
 
-module.exports = { createAlbum, readAllAlbums, readAlbumById, updateAlbum };
+const deleteAlbum = async (req, res) => { 
+  const { id } = req.params;
+  const values = [id];
+  try {
+    const { rows } = await db.query('DELETE FROM Albums WHERE id = $1 RETURNING *', values);
+    if (!rows.length) {
+      return res.status(404).json({ message: `Album ${id} does not exist.` });
+    }
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while deleting the album' });
+  }
+};
+
+module.exports = { createAlbum, readAllAlbums, readAlbumById, updateAlbum, deleteAlbum };
