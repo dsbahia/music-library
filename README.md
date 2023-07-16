@@ -36,7 +36,7 @@ The Music Library API is a powerful tool for managing and organizing your music 
 
 `npm test`
 
-5. Start the server:
+6. Start the server:
 
 `npm start`
 
@@ -88,7 +88,7 @@ This project is licensed under the [MIT License.](https://opensource.org/license
 
 ## Acknowledgments
 
-This project was created during the March 2023 Command Shift Software Developer Bootcamp and i'd like to thank the following lecturers for their support and wisdom:
+This project was created during the awesome March 2023 [Command Shift Software Developer Bootcamp](https://www.commandshift.co/) and i'd like to thank the following lecturers for their support and wisdom:
 
 - Dragoș-Robert Neagu
 - Will Hodgkinson
