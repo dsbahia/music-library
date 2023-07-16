@@ -10,7 +10,9 @@ const createArtist = async (req, res) => {
     } = await db.query(insertQuery, values);
     res.status(201).json(newArtist);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while creating the artist.'});
+    res
+      .status(500)
+      .json({ error: 'An error occurred while creating the artist.' });
   }
 };
 
@@ -19,7 +21,7 @@ const readAllArtists = async (req, res) => {
     const { rows } = await db.query('SELECT * FROM Artists');
     res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while reading artists.'});
+    res.status(500).json({ error: 'An error occurred while reading artists.' });
   }
 };
 
@@ -35,7 +37,9 @@ const readArtistById = async (req, res) => {
       res.status(200).json(rows[0]);
     }
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching the artist.'});
+    res
+      .status(500)
+      .json({ error: 'An error occurred while fetching the artist.' });
   }
 };
 
@@ -45,7 +49,8 @@ const updateArtist = async (req, res) => {
   let query, params;
 
   if (name && genre) {
-    query = 'UPDATE Artists SET name = $1, genre = $2 WHERE id = $3 RETURNING *';
+    query =
+      'UPDATE Artists SET name = $1, genre = $2 WHERE id = $3 RETURNING *';
     params = [name, genre, id];
   } else if (name) {
     query = 'UPDATE Artists SET name = $1 WHERE id = $2 RETURNING *';
@@ -56,29 +61,43 @@ const updateArtist = async (req, res) => {
   }
 
   try {
-    const { rows: [artist] } = await db.query(query, params);
+    const {
+      rows: [artist],
+    } = await db.query(query, params);
     if (!artist) {
-        return res.status(404).json({ message: `artist ${id} does not exist` });
-    } 
+      return res.status(404).json({ message: `artist ${id} does not exist` });
+    }
     res.status(200).json(artist);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while updating the artist.' });
+    res
+      .status(500)
+      .json({ error: 'An error occurred while updating the artist.' });
   }
 };
 
 const deleteArtist = async (req, res) => {
-    const { id } = req.params;
-    const values = [id];
-    try {
-        const { rows } = await db.query('DELETE FROM Artists WHERE id = $1 RETURNING *', values);
-        if (rows.length === 0) {
-            return res.status(404).json({ message: `artist ${id} does not exist` });
-        }
-        res.status(200).json(rows[0]);
-
-    } catch (error) {
-        res.status(500).json({ error: 'An error occurred while deleting the artist' });
+  const { id } = req.params;
+  const values = [id];
+  try {
+    const { rows } = await db.query(
+      'DELETE FROM Artists WHERE id = $1 RETURNING *',
+      values
+    );
+    if (!rows.length) {
+      return res.status(404).json({ message: `artist ${id} does not exist` });
     }
-}
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: 'An error occurred while deleting the artist' });
+  }
+};
 
-module.exports = { createArtist, readAllArtists, readArtistById, updateArtist, deleteArtist };
+module.exports = {
+  createArtist,
+  readAllArtists,
+  readArtistById,
+  updateArtist,
+  deleteArtist,
+};

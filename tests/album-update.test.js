@@ -40,12 +40,12 @@ describe('update album', () => {
     });
 
     it('returns a 404 if the album does not exist', async () => {
-        const { status, body } = await request(app)
+      const { status, body } = await request(app)
         .patch('/albums/999999999')
         .send({ name: 'New Album Name', year: 2023, artistid: artist.id });
 
-        expect(status).to.equal(404);
-        expect(body.message).to.equal('Album 999999999 does not exist.')
+      expect(status).to.equal(404);
+      expect(body.message).to.equal('Album 999999999 does not exist.');
     });
   });
 });

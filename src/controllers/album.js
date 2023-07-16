@@ -69,7 +69,9 @@ const updateAlbum = async (req, res) => {
   }
 
   if (!updates.length) {
-    return res.status(400).json({ message: 'No valid fields provided for update.' });
+    return res
+      .status(400)
+      .json({ message: 'No valid fields provided for update.' });
   }
 
   const query = `UPDATE Albums SET ${updates.join(
@@ -87,22 +89,35 @@ const updateAlbum = async (req, res) => {
 
     res.status(200).json(album);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while updating the album.' });
+    res
+      .status(500)
+      .json({ error: 'An error occurred while updating the album.' });
   }
 };
 
-const deleteAlbum = async (req, res) => { 
+const deleteAlbum = async (req, res) => {
   const { id } = req.params;
   const values = [id];
   try {
-    const { rows } = await db.query('DELETE FROM Albums WHERE id = $1 RETURNING *', values);
+    const { rows } = await db.query(
+      'DELETE FROM Albums WHERE id = $1 RETURNING *',
+      values
+    );
     if (!rows.length) {
       return res.status(404).json({ message: `Album ${id} does not exist.` });
     }
     res.status(200).json(rows[0]);
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while deleting the album' });
+    res
+      .status(500)
+      .json({ error: 'An error occurred while deleting the album' });
   }
 };
 
-module.exports = { createAlbum, readAllAlbums, readAlbumById, updateAlbum, deleteAlbum };
+module.exports = {
+  createAlbum,
+  readAllAlbums,
+  readAlbumById,
+  updateAlbum,
+  deleteAlbum,
+};

@@ -1,5 +1,11 @@
 const express = require('express');
-const { createArtist, readAllArtists, readArtistById, updateArtist, deleteArtist } = require('../controllers/artist');
+const {
+  createArtist,
+  readAllArtists,
+  readArtistById,
+  updateArtist,
+  deleteArtist,
+} = require('../controllers/artist');
 const { createAlbum } = require('../controllers/album');
 
 const artistRouter = express.Router();
