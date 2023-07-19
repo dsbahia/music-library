@@ -38,6 +38,7 @@ describe('Read Artists', () => {
       });
     });
   });
+  
   describe('GET /artists/{id}', () => {
     it('returns the artist with the correct id', async () => {
       const { status, body } = await request(app)
